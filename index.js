@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -12,30 +12,35 @@ app.use(express.json());
 // password: FCU29fNSxmazGxA1
 
 
-const uri =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ub5swj4.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
-const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ub5swj4.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
 
-async function run(){
+async function run() {
 
-   try{
-  const productConnection = client.db('assignment-12').collection('allProduct');
+    try {
+        const productConnection = client.db('assignment-12').collection('allProduct');
 
+        app.get('/service/:category_id', async (req, res) => {
+            const id = req.params.category_id;
+            console.log(id)
+            // const query = {category_id: id}
+            // const product = await productConnection.findOne(query)
+            res.send(id)
+        })
+    }
+    finally {
 
-   }
-   finally{
-
-   } 
+    }
 
 }
 run().catch(err => console.log(err));
 
-app.get('/', async(req,res) =>{
+app.get('/', async (req, res) => {
     res.send('assignment server is running')
 })
 
-app.listen(port, () =>{
+app.listen(port, () => {
     console.log(`server running port on ${port}`)
 })
