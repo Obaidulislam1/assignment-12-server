@@ -22,12 +22,18 @@ async function run() {
     try {
         const productConnection = client.db('assignment-12').collection('allProduct');
 
+        // app.get('/service', async(req,res) =>{
+        //   const query = {}
+        //   const cursor =productConnection.find(query) 
+        // })
+
         app.get('/service/:category_id', async (req, res) => {
             const id = req.params.category_id;
             console.log(id)
-            // const query = {category_id: id}
-            // const product = await productConnection.findOne(query)
-            res.send(id)
+            const query = {category_id: id}
+            const product = productConnection.find(query)
+            const products = await product.toArray();
+            res.send(products);
         })
     }
     finally {
