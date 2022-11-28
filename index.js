@@ -18,6 +18,7 @@ async function run() {
     try {
         const productConnection = client.db('assignment-12').collection('allProduct');
         const ordersCollection = client.db('assignment-12').collection('order')
+        const userCollection = client.db('assignment-12').collection('user')
 
         app.get('/service/:category_id', async (req, res) => {
             const id = req.params.category_id;
@@ -38,7 +39,11 @@ async function run() {
             const query ={email: email};
             const order = await ordersCollection.find(query).toArray();
             res.send(order);
-
+        })
+        app.post('/user', async(req,res) =>{
+            const user = req.body;
+            const result = await userCollection.insertOne(user)
+            res.send(result);
         })
     }
     finally {
